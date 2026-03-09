@@ -1,5 +1,5 @@
-import { LoginPlaceholderForm } from "@/src/components/placeholders/LoginPlaceholderForm";
+import { AuthForm } from "@/src/components/auth/AuthForm";
 
 export default function LoginPage() {
-  return <LoginPlaceholderForm />;
+  return <AuthForm mode="login" />;
 }

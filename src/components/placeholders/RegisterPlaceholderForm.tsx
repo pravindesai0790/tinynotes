@@ -6,7 +6,10 @@ import { StatusPill } from "../ui/StatusPill";
 
 export function RegisterPlaceholderForm() {
   return (
-    <RouteSection title="Register" description="Account creation form placeholder. No submission logic exists yet.">
+    <RouteSection
+      title="Register"
+      description="Account creation form placeholder. No submission logic exists yet."
+    >
       <PlaceholderCard className="space-y-4">
         <StatusPill label="UI scaffold" />
         <PlaceholderField label="Name" value="Ada Lovelace" />

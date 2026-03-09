@@ -11,8 +11,8 @@ export function HomeIntentPlaceholder() {
       <PlaceholderCard className="space-y-3">
         <StatusPill label="Scaffold only" tone="warning" />
         <p className="text-sm text-slate-700">
-          Intended behavior later: if authenticated, redirect to <code>/notes</code>; otherwise redirect to{" "}
-          <code>/login</code>.
+          Intended behavior later: if authenticated, redirect to <code>/notes</code>; otherwise
+          redirect to <code>/login</code>.
         </p>
       </PlaceholderCard>
     </RouteSection>

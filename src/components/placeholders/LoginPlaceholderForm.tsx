@@ -6,7 +6,10 @@ import { StatusPill } from "../ui/StatusPill";
 
 export function LoginPlaceholderForm() {
   return (
-    <RouteSection title="Login" description="Credentials form placeholder. No authentication logic is wired.">
+    <RouteSection
+      title="Login"
+      description="Credentials form placeholder. No authentication logic is wired."
+    >
       <PlaceholderCard className="space-y-4">
         <StatusPill label="UI scaffold" />
         <PlaceholderField label="Email" value="you@example.com" />

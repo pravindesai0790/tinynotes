@@ -10,7 +10,8 @@ export function NotFoundPlaceholder() {
           <StatusPill label="404 placeholder" tone="warning" />
           <h1 className="text-2xl font-semibold text-slate-900">Page Not Found</h1>
           <p className="text-sm text-slate-700">
-            Custom not-found scaffolding is active. Resource checks and navigation behavior will be wired later.
+            Custom not-found scaffolding is active. Resource checks and navigation behavior will be
+            wired later.
           </p>
           <div className="flex justify-center">
             <PlaceholderButton label="Return to notes (inactive)" />

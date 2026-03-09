@@ -10,7 +10,9 @@ export function LoadingPlaceholder({ title }: LoadingPlaceholderProps) {
     <PlaceholderCard className="space-y-3">
       <StatusPill label="Loading placeholder" />
       <h2 className="text-base font-medium text-slate-900">{title}</h2>
-      <p className="text-sm text-slate-600">Data fetch/loading UI will be implemented in a later phase.</p>
+      <p className="text-sm text-slate-600">
+        Data fetch/loading UI will be implemented in a later phase.
+      </p>
     </PlaceholderCard>
   );
 }

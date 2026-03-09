@@ -20,11 +20,17 @@ export function NoteEditorPlaceholder({ mode }: NoteEditorPlaceholderProps) {
     <RouteSection title={title} description={description}>
       <PlaceholderCard className="space-y-4">
         <div className="flex items-center justify-between gap-3">
-          <StatusPill label={isEditMode ? "Edit mode placeholder" : "Create mode placeholder"} tone="warning" />
+          <StatusPill
+            label={isEditMode ? "Edit mode placeholder" : "Create mode placeholder"}
+            tone="warning"
+          />
           <StatusPill label="Autosave inactive" />
         </div>
         <PlaceholderField label="Title" value="Untitled note" />
-        <PlaceholderField label="Rich text editor" value="TipTap editor will be mounted here later." />
+        <PlaceholderField
+          label="Rich text editor"
+          value="TipTap editor will be mounted here later."
+        />
         <div className="flex flex-wrap gap-2">
           <PlaceholderButton label="Save draft (inactive)" />
           <PlaceholderButton label="Delete note (inactive)" tone="danger" />
