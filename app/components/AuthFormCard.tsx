@@ -1,4 +1,9 @@
+"use client";
+
+import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
 
 type AuthMode = "login" | "register";
 
@@ -11,6 +16,7 @@ const authContent: Record<
     switchPrompt: string;
     switchLabel: string;
     switchHref: string;
+    errorMessage: string;
   }
 > = {
   login: {
@@ -20,6 +26,7 @@ const authContent: Record<
     switchPrompt: "Need an account?",
     switchLabel: "Create one",
     switchHref: "/register",
+    errorMessage: "Unable to log in. Please check your credentials and try again.",
   },
   register: {
     title: "Create your account",
@@ -28,11 +35,83 @@ const authContent: Record<
     switchPrompt: "Already have an account?",
     switchLabel: "Log in",
     switchHref: "/login",
+    errorMessage: "Unable to create your account. Please try again.",
   },
 };
 
+function deriveNameFromEmail(email: string): string {
+  const [localPart] = email.split("@");
+  const trimmed = localPart?.trim() ?? "";
+
+  if (!trimmed) {
+    return "User";
+  }
+
+  const normalized = trimmed.replace(/[._-]+/g, " ").trim();
+  return normalized.length > 0 ? normalized : "User";
+}
+
 export function AuthFormCard({ mode }: { mode: AuthMode }) {
   const content = authContent[mode];
+  const router = useRouter();
+  const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (isPending) {
+      return;
+    }
+
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get("email") ?? "")
+      .trim()
+      .toLowerCase();
+    const password = String(formData.get("password") ?? "");
+
+    if (!email || !password) {
+      setError(content.errorMessage);
+      return;
+    }
+
+    setIsPending(true);
+    setError(null);
+
+    try {
+      if (mode === "login") {
+        const result = await authClient.signIn.email({
+          email,
+          password,
+          callbackURL: "/notes",
+        });
+
+        if (result.error) {
+          setError(content.errorMessage);
+          return;
+        }
+      } else {
+        const result = await authClient.signUp.email({
+          email,
+          password,
+          name: deriveNameFromEmail(email),
+          callbackURL: "/notes",
+        });
+
+        if (result.error) {
+          setError(content.errorMessage);
+          return;
+        }
+      }
+
+      router.push("/notes");
+      router.refresh();
+    } catch {
+      setError(content.errorMessage);
+    } finally {
+      setIsPending(false);
+    }
+  };
 
   return (
     <section className="mx-auto w-full max-w-md">
@@ -50,7 +129,7 @@ export function AuthFormCard({ mode }: { mode: AuthMode }) {
             <p className="text-sm leading-relaxed text-slate-300">{content.description}</p>
           </div>
 
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <label htmlFor={`${mode}-email`} className="block space-y-2">
               <span className="text-sm font-medium text-slate-200">Email</span>
               <input
@@ -71,17 +150,29 @@ export function AuthFormCard({ mode }: { mode: AuthMode }) {
                 name="password"
                 type="password"
                 required
+                minLength={8}
                 autoComplete={mode === "login" ? "current-password" : "new-password"}
                 placeholder="Enter your password"
                 className="w-full rounded-xl border border-cyan-400/30 bg-slate-950/70 px-3 py-2.5 text-sm text-slate-100 outline-none transition-shadow placeholder:text-slate-500 focus:border-cyan-300 focus:ring-2 focus:ring-cyan-400/30"
               />
             </label>
 
+            {error ? (
+              <p className="rounded-lg border border-red-400/30 bg-red-950/40 px-3 py-2 text-sm text-red-200">
+                {error}
+              </p>
+            ) : null}
+
             <button
               type="submit"
-              className="w-full rounded-xl bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-300"
+              disabled={isPending}
+              className="w-full rounded-xl bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-70"
             >
-              {content.submitLabel}
+              {isPending
+                ? mode === "login"
+                  ? "Logging in..."
+                  : "Creating account..."
+                : content.submitLabel}
             </button>
           </form>
 
