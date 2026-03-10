@@ -7,7 +7,9 @@
     "build": "bun run --bun next build",
     "start": "bun run --bun next start",
     "lint": "oxlint",
-    "format": "oxfmt"
+    "format": "oxfmt",
+    "db:migrate": "bun run scripts/migrate.ts up",
+    "db:migrate:down": "bun run scripts/migrate.ts down"
   },
   "dependencies": {
     "next": "16.1.6",
