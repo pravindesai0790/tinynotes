@@ -12,8 +12,6 @@ export const metadata: Metadata = {
 };
 const navigationLinks = [
   { href: "/", label: "Home" },
-  { href: "/notes", label: "Notes" },
-  { href: "/notes/new", label: "New Note" },
   { href: "/login", label: "Login" },
   { href: "/register", label: "Register" },
 ];
@@ -25,22 +23,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={[inter.variable, "min-h-screen bg-slate-50 text-slate-900 antialiased"].join(
+        className={[inter.variable, "min-h-screen bg-slate-950 text-slate-100 antialiased"].join(
           " ",
         )}
       >
         <div className="min-h-screen">
-          <header className="border-b border-slate-200 bg-white">
+          <header className="border-b border-cyan-400/25 bg-gradient-to-r from-slate-950 via-blue-950 to-cyan-950">
             <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-              <Link href="/" className="text-lg font-semibold tracking-tight">
+              <Link href="/" className="text-lg font-semibold tracking-tight text-cyan-100">
                 TinyNotes
               </Link>
-              <nav className="flex flex-wrap items-center justify-end gap-4 text-sm font-medium text-slate-600">
+              <nav className="flex flex-wrap items-center justify-end gap-4 text-sm font-medium text-cyan-200/90">
                 {navigationLinks.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="transition-colors hover:text-slate-900"
+                    className="transition-colors hover:text-cyan-100"
                   >
                     {link.label}
                   </Link>
